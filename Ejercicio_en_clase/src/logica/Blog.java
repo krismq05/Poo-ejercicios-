@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.List; // ✔ agregado
+import java.util.List; 
 
 public class Blog {
     private static int consecutivo = 1;
@@ -55,14 +55,14 @@ public class Blog {
         return null;
     }
 
-    public String agregarComentario(int codPublicacion, String email, String texto) {
+    public String agregarComentario(int codPublicacion, String email, String ip, String texto) {
         Publicacion p = buscarPublicacion(codPublicacion);
 
         if (p == null) {
             return "No existe la publicación.";
         }
 
-        p.agregarComentario(email,"0.0.0.0", texto);
+        p.agregarComentario(email, ip, texto);
         return "Comentario agregado.";
     }
 
