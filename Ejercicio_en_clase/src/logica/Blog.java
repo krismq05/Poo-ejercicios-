@@ -2,6 +2,9 @@ package logica;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.List; // ✔ agregado
 
 public class Blog {
     private static int consecutivo = 1;
@@ -9,7 +12,8 @@ public class Blog {
     private String nombre;
     private String descripcion;
     private LocalDateTime fechaCreacion;
-    private ArrayList<Publicacion> publicaciones;
+
+    private List<Publicacion> publicaciones;
 
     public Blog(String nombre, String descripcion) {
         codigo = consecutivo;
@@ -17,7 +21,8 @@ public class Blog {
         this.nombre = nombre;
         this.descripcion = descripcion;
         fechaCreacion = LocalDateTime.now();
-        publicaciones = new ArrayList<Publicacion>();
+
+        publicaciones = new ArrayList<>();
     }
 
     public int getCodigo() {
@@ -50,9 +55,52 @@ public class Blog {
         return null;
     }
 
+    public String agregarComentario(int codPublicacion, String email, String texto) {
+        Publicacion p = buscarPublicacion(codPublicacion);
+
+        if (p == null) {
+            return "No existe la publicación.";
+        }
+
+        p.agregarComentario(email,"0.0.0.0", texto);
+        return "Comentario agregado.";
+    }
+
+    public String borrarComentario(int codPublicacion, int posicion) {
+        Publicacion p = buscarPublicacion(codPublicacion);
+
+        if (p == null) {
+            return "No existe la publicación.";
+        }
+
+        return p.borrarComentario(posicion);
+    }
+
+    public Map<Integer, String> obtenerTitulosPublicaciones() {
+        Map<Integer, String> titulos = new HashMap<>();
+
+        for (Publicacion p : publicaciones) {
+            titulos.put(p.getCodigo(), p.getTitulo());
+        }
+
+        return titulos;
+    }
+
+    public String obtenerPublicacionEnString(int codigoPublicacion) {
+        Publicacion p = buscarPublicacion(codigoPublicacion);
+
+        if (p == null) {
+            return "No existe la publicación.";
+        }
+
+        return p.toString();
+    }
+
+    @Override
     public String toString() {
         String res = "BLOG: " + nombre + "\n";
-        res += descripcion + "\n\n";
+        res += descripcion + "\n";
+        res += "Fecha: " + fechaCreacion + "\n\n";
 
         for (Publicacion p : publicaciones) {
             res += p.toString() + "\n\n";
